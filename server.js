@@ -10,13 +10,13 @@ app.get("/", (req, res) => {
 });
 
 app.post("/webhook", (req, res) => {
-    console.log("Saweria:", req.body);
-
     lastDonation = {
-        nama: req.body.donator || "Unknown",
-        pesan: req.body.message || "",
-        nominal: req.body.amount || 0
+        donor: req.body.donator_name,
+        amount: req.body.amount_raw,
+        message: req.body.message || ""
     };
+
+    console.log(lastDonation);
 
     res.sendStatus(200);
 });
