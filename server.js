@@ -1,55 +1,27 @@
 const express = require("express");
-
 const app = express();
 
 app.use(express.json());
 
-let donations =[];
+let lastDonation = {};
 
-app.get("/", (req,res) => {
+app.get("/", (req, res) => {
     res.send("Backend Roblox Aktif!");
 });
 
-app.get("/api", (req, res) => {
-    res.json({
-        status: "Online",
-        game: "Vade Club"
-    });
+app.post("/webhook", (req, res) => {
+    console.log("Saweria:", req.body);
+
+    lastDonation = req.body;
+
+    res.sendStatus(200);
 });
 
-// Simulasi donasi masuk
-app.get("/donate/:username/:amount", (req, res) => {
-
-    donations.push({
-        username: req.params.username,
-        amount: Number(req.params.amount)
-    });
-
-    res.json({
-        success: true,
-        data: donations
-    });
+app.get("/donation", (req, res) => {
+    res.json(lastDonation);
 });
 
-// Cek donasi masuk
-app.get("/check/:username", (req, res) => {
-
-    const username = req.params.username;
-
-    const result = donations.find(
-        d => d.username === username
-    );
-
-    if(result){
-        res.json(result);
-    }else{
-        res.json({
-            message: "Tidak ada donasi"
-        });
-    }
-});
-
-
-app.listen(3000, () => {
-    console.log("Server berjalan di port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server berjalan di port ${PORT}`);
 });
