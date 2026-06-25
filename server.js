@@ -4,19 +4,19 @@ const app = express();
 app.use(express.json());
 
 let lastDonation = {};
-
-app.get("/", (req, res) => {
-    res.send("Backend Roblox Aktif!");
-});
+let donationId = 0;
 
 app.post("/webhook", (req, res) => {
+    donationId++;
+
     lastDonation = {
+        id: donationId,
         donor: req.body.donator_name,
         amount: req.body.amount_raw,
         message: req.body.message || ""
     };
 
-    console.log(lastDonation);
+    console.log("Donasi baru:", lastDonation);
 
     res.sendStatus(200);
 });
