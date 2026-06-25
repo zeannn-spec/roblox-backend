@@ -6,6 +6,10 @@ app.use(express.json());
 let donations = [];
 let donationId = 0;
 
+app.get("/", (req, res) => {
+    res.send("Backend Roblox Aktif!");
+});
+
 app.post("/webhook", (req, res) => {
     donationId++;
 
@@ -24,7 +28,11 @@ app.post("/webhook", (req, res) => {
 });
 
 app.get("/donation", (req, res) => {
-    res.json(donations);
+    const pendingDonations = [...donations];
+
+    donations = [];
+
+    res.json(pendingDonations);
 });
 
 const PORT = process.env.PORT || 3000;
